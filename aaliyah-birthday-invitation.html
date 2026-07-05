@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Aaliyah's 6th Birthday Invitation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Poppins:wght@400;500;600&display=swap');
+
+  :root{
+    --pink-bg: #ffe1ec;
+    --pink-deep: #ff6f9c;
+    --red-bow: #ee3a6b;
+    --cream: #fff8f5;
+    --gold: #ffcf5c;
+    --white: #ffffff;
+    --ink: #7a2b45;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0; padding:0; height:100%;
+    font-family:'Poppins', sans-serif;
+    background: var(--pink-bg);
+    overflow:hidden;
+  }
+
+  #stage{
+    position:relative;
+    width:100%;
+    height:100vh;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,255,255,0.6) 0, transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(255,255,255,0.5) 0, transparent 40%),
+      var(--pink-bg);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* Polka dot backdrop */
+  .dots{
+    position:absolute; inset:0;
+    background-image: radial-gradient(var(--white) 3px, transparent 3px);
+    background-size: 42px 42px;
+    opacity:0.35;
+    pointer-events:none;
+  }
+
+  .scene{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:6vw;
+    opacity:0;
+    transform: scale(0.9);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    pointer-events:none;
+  }
+  .scene.active{
+    opacity:1;
+    transform: scale(1);
+    pointer-events:auto;
+  }
+
+  /* ---- Signature element: bow-cat ---- */
+  .kitty{
+    width:150px;
+    height:150px;
+    position:relative;
+    margin-bottom:18px;
+    animation: bob 2.4s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0) rotate(-2deg); }
+    50%{ transform:translateY(-10px) rotate(2deg); }
+  }
+  .kitty svg{ width:100%; height:100%; overflow:visible; }
+
+  h1.headline{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    color: var(--red-bow);
+    font-size: clamp(2rem, 7vw, 3.6rem);
+    margin: 0 0 6px 0;
+    text-shadow: 0 2px 0 var(--white);
+    line-height:1.05;
+  }
+  .sub{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    color: var(--ink);
+    font-size: clamp(1.1rem, 3.4vw, 1.6rem);
+    margin-bottom: 10px;
+  }
+  .body-text{
+    color: var(--ink);
+    font-size: clamp(0.95rem, 2.6vw, 1.15rem);
+    max-width: 480px;
+    line-height:1.5;
+  }
+
+  .card{
+    background: var(--cream);
+    border-radius: 28px;
+    padding: 32px 30px;
+    box-shadow: 0 18px 40px rgba(238,58,107,0.22);
+    border: 3px dashed var(--pink-deep);
+    max-width: 460px;
+    width:100%;
+  }
+
+  .detail-row{
+    display:grid;
+    grid-template-columns: 84px 1fr;
+    align-items:start;
+    gap:10px;
+    margin: 10px auto;
+    max-width: 320px;
+    font-size: clamp(0.95rem, 2.6vw, 1.15rem);
+    color: var(--ink);
+    font-weight:500;
+    text-align:left;
+  }
+  .detail-row .tag{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    color: var(--red-bow);
+    text-align:right;
+  }
+
+  .balloon{
+    position:absolute;
+    bottom:-120px;
+    width:46px; height:58px;
+    border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: rise linear infinite;
+    opacity:0.85;
+  }
+  @keyframes rise{
+    0%{ transform: translateY(0) translateX(0); }
+    100%{ transform: translateY(-120vh) translateX(30px); }
+  }
+
+  .cake-num{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    font-size: clamp(4rem, 16vw, 7rem);
+    color: var(--red-bow);
+    line-height:1;
+    -webkit-text-stroke: 3px var(--white);
+  }
+
+  .progress{
+    position:absolute;
+    bottom:22px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:8px;
+    z-index:10;
+  }
+  .progress .dot{
+    width:9px; height:9px; border-radius:50%;
+    background: rgba(238,58,107,0.3);
+    transition: background 0.3s;
+  }
+  .progress .dot.on{ background: var(--red-bow); }
+
+  .replay-btn{
+    margin-top:18px;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    background: var(--red-bow);
+    color:var(--white);
+    border:none;
+    border-radius:999px;
+    padding:12px 26px;
+    font-size:1rem;
+    cursor:pointer;
+    box-shadow:0 8px 18px rgba(238,58,107,0.35);
+  }
+  .replay-btn:active{ transform: translateY(2px); }
+
+  .skip{
+    position:absolute;
+    top:16px; right:18px;
+    z-index:10;
+    background:rgba(255,255,255,0.7);
+    border:none;
+    border-radius:999px;
+    padding:8px 14px;
+    font-family:'Poppins', sans-serif;
+    font-size:0.8rem;
+    color:var(--ink);
+    cursor:pointer;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .kitty, .balloon{ animation:none !important; }
+    .scene{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<svg style="position:absolute; width:0; height:0;" aria-hidden="true">
+  <symbol id="cat-face" viewBox="0 0 200 190">
+    <!-- ears -->
+    <path d="M40,70 Q18,18 58,33 Q73,44 66,76 Z" fill="#ffffff" stroke="#2a2a2a" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M160,70 Q182,18 142,33 Q127,44 134,76 Z" fill="#ffffff" stroke="#2a2a2a" stroke-width="7" stroke-linejoin="round"/>
+    <!-- head -->
+    <path d="M100,38
+             C152,38 178,70 178,107
+             C178,148 144,168 100,168
+             C56,168 22,148 22,107
+             C22,70 48,38 100,38 Z"
+          fill="#ffffff" stroke="#2a2a2a" stroke-width="7" stroke-linejoin="round"/>
+    <!-- eyes -->
+    <ellipse cx="76" cy="100" rx="6.5" ry="9" fill="#2a2a2a"/>
+    <ellipse cx="124" cy="100" rx="6.5" ry="9" fill="#2a2a2a"/>
+    <!-- nose -->
+    <ellipse cx="100" cy="114" rx="7.5" ry="5.5" fill="#ffcf5c" stroke="#2a2a2a" stroke-width="2"/>
+    <!-- whiskers left -->
+    <line x1="6" y1="97" x2="46" y2="99" stroke="#2a2a2a" stroke-width="3" stroke-linecap="round"/>
+    <line x1="4" y1="112" x2="46" y2="111" stroke="#2a2a2a" stroke-width="3" stroke-linecap="round"/>
+    <line x1="6" y1="127" x2="46" y2="121" stroke="#2a2a2a" stroke-width="3" stroke-linecap="round"/>
+    <!-- whiskers right -->
+    <line x1="194" y1="97" x2="154" y2="99" stroke="#2a2a2a" stroke-width="3" stroke-linecap="round"/>
+    <line x1="196" y1="112" x2="154" y2="111" stroke="#2a2a2a" stroke-width="3" stroke-linecap="round"/>
+    <line x1="194" y1="127" x2="154" y2="121" stroke="#2a2a2a" stroke-width="3" stroke-linecap="round"/>
+    <!-- flower accent -->
+    <g transform="translate(130,36) rotate(12)">
+      <g fill="#ff4fa3" stroke="#2a2a2a" stroke-width="3" stroke-linejoin="round">
+        <ellipse cx="0" cy="-17" rx="9.5" ry="14.5" transform="rotate(0)"/>
+        <ellipse cx="0" cy="-17" rx="9.5" ry="14.5" transform="rotate(60)"/>
+        <ellipse cx="0" cy="-17" rx="9.5" ry="14.5" transform="rotate(120)"/>
+        <ellipse cx="0" cy="-17" rx="9.5" ry="14.5" transform="rotate(180)"/>
+        <ellipse cx="0" cy="-17" rx="9.5" ry="14.5" transform="rotate(240)"/>
+        <ellipse cx="0" cy="-17" rx="9.5" ry="14.5" transform="rotate(300)"/>
+      </g>
+      <circle cx="0" cy="0" r="9" fill="#ffcf5c" stroke="#2a2a2a" stroke-width="3"/>
+    </g>
+  </symbol>
+</svg>
+
+
+<div id="stage">
+  <div class="dots"></div>
+
+  <!-- floating balloons, ambient -->
+  <div class="balloon" style="left:8%; background:var(--pink-deep); animation-duration:9s; animation-delay:0s;"></div>
+  <div class="balloon" style="left:22%; background:var(--gold); animation-duration:11s; animation-delay:2s;"></div>
+  <div class="balloon" style="left:72%; background:var(--red-bow); animation-duration:10s; animation-delay:1s;"></div>
+  <div class="balloon" style="left:85%; background:var(--pink-deep); animation-duration:12s; animation-delay:3s;"></div>
+
+  <button class="skip" onclick="goTo(current + 1)">Skip ▸▸</button>
+
+  <!-- Scene 1: Kitty intro -->
+  <div class="scene" data-scene="0">
+    <div class="kitty">
+      <svg viewBox="0 0 200 190"><use href="#cat-face"/></svg>
+    </div>
+    <div class="sub">You're Invited!</div>
+    <h1 class="headline">A Purr-fectly<br>Pink Celebration</h1>
+  </div>
+
+  <!-- Scene 2: Birthday girl + age -->
+  <div class="scene" data-scene="1">
+    <div class="cake-num">6</div>
+    <h1 class="headline">Aaliyah Turns 6!</h1>
+    <div class="body-text">Join us for cake, bows, and lots of birthday sparkle 🎀</div>
+  </div>
+
+  <!-- Scene 3: Details card -->
+  <div class="scene" data-scene="2">
+    <div class="card">
+      <div class="sub" style="margin-bottom:14px;">Celebration Details</div>
+      <div class="detail-row"><span class="tag">Date</span><span>Monday, July 6, 2026</span></div>
+      <div class="detail-row"><span class="tag">Time</span><span>6:00 PM</span></div>
+      <div class="detail-row"><span class="tag">Where</span><span>Herrera Zavala Home</span></div>
+      <div class="detail-row"><span class="tag"></span><span>18142 W Poston Dr</span></div>
+      <div class="detail-row"><span class="tag"></span><span>Surprise, AZ 85387</span></div>
+    </div>
+  </div>
+
+  <!-- Scene 4: RSVP / closing -->
+  <div class="scene" data-scene="3">
+    <div style="transform: scale(0.75); margin:-20px 0 -10px 0;">
+      <div class="kitty">
+        <svg viewBox="0 0 200 190"><use href="#cat-face"/></svg>
+      </div>
+    </div>
+    <h1 class="headline">See You There!</h1>
+    <div class="body-text">We can't wait to celebrate with you! 🩷</div>
+    <button class="replay-btn" onclick="goTo(0)">Watch Again</button>
+  </div>
+
+  <div class="progress">
+    <div class="dot" data-dot="0"></div>
+    <div class="dot" data-dot="1"></div>
+    <div class="dot" data-dot="2"></div>
+    <div class="dot" data-dot="3"></div>
+  </div>
+</div>
+
+<script>
+  const scenes = document.querySelectorAll('.scene');
+  const dots = document.querySelectorAll('.dot');
+  let current = 0;
+  let timer = null;
+  const durations = [10700, 10900, 11700, 13500];
+
+  function render(){
+    scenes.forEach(s => s.classList.toggle('active', +s.dataset.scene === current));
+    dots.forEach(d => d.classList.toggle('on', +d.dataset.dot === current));
+  }
+
+  function scheduleNext(){
+    clearTimeout(timer);
+    if(current < scenes.length - 1){
+      timer = setTimeout(() => { current++; render(); scheduleNext(); }, durations[current]);
+    }
+  }
+
+  function goTo(i){
+    current = Math.min(i, scenes.length - 1);
+    render();
+    scheduleNext();
+  }
+
+  render();
+  scheduleNext();
+</script>
+
+</body>
+</html>
